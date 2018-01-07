@@ -7,7 +7,6 @@
 #define FALSE 0;
 
 typedef struct {
-    WORD soi_mark;
     WORD app;
     WORD data_len;
    
@@ -65,12 +64,10 @@ typedef struct _SOS_markers {
     BYTE spec_end;
     BYTE succ_approx;
 
-    BYTE* SOS_data;
 }SOS_MARK;
 
 typedef struct _DRI_marker {
-    WORD DRI_mark;
-    WORD scan_len;
+    WORD data_len;
     WORD restart_interval;
 }DRI_MARK;
 
@@ -86,7 +83,7 @@ typedef struct _DRI_marker {
 
 //marker
 #define SOI 0xD8FF // Start of Image
-#define EOI 0XD9 // End of Image
+#define EOI 0XD9FF // End of Image
 #define APP0 0xE0FF //application specific data
 #define SOF 0xC0FF //Start of Frame
 #define DQT 0xDBFF //Define Quantization Tables
@@ -112,5 +109,10 @@ WORD to_big(WORD a) {
 
 int readHeader(FILE*, HEADER*,HEADER_ADDTIONAL*, WORD);
 void readDQT(FILE* jpg, DQT_MARK* dqt_mark, WORD read);
+
+void readSOF(FILE* jpg, SOF_MARK* sof_mark, WORD read);
+
+void readDHT(FILE* jpg, DHT_MARK* dht_mark, WORD read);
+void readSOS(FILE* jpg, SOS_MARK* sos_mark, WORD read, long filesize, BYTE* scandata);
 
 #endif
